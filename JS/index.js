@@ -1,8 +1,13 @@
 const carrito = []
 console.log(carrito)
-class añadir {
+class Compra {
     constructor(carritoArticulos) {
         this.carrito = carritoArticulos
+    }
+    despedida(){
+        if (this.carrito.length > 0) {
+            return alert("¡Muchas gracias por tu compra!")
+        }
     }
 }
 const articulos = [{prenda: '👗', codigo: 1, nombre: 'Vestido', precio: 10000},
@@ -18,24 +23,13 @@ function buscarArticulos(codigo) {
     return resultado 
 }
 
-const talles = ['S', 'M', 'L', 'XL']
-function elegirTalle(){
-    let talle = prompt('Elija el talle que desee: (S, M, L, XL)')
-    for(let i = 0; i < talles.length; i++){
-        if (talles[i] == talle)
-        return talles[i]
-    }
-    alert('elija un talle valido')
-    elegirTalle()
-}
 
 function realizarCompra() {
     let codigo = prompt("Ingresa el código de tu prenda de interés: (1, 2, 3, 4, 5)")
-    let talleElegido = elegirTalle()
     let articuloElegido = buscarArticulos(codigo)
     if (articuloElegido !== undefined) {
         carrito.push(articuloElegido)
-        let confirme = confirm('Usted eligio ' + articuloElegido.nombre + ' en Talle ' + talleElegido )
+        let confirme = confirm('Usted eligio ' + articuloElegido.nombre)
         if (confirme === true){
             calcularInteres()
         }
@@ -46,27 +40,27 @@ function realizarCompra() {
     }
 }
 
+function buscarPrecios(precio) {
+    let resultado = articulos.find((prenda)=> prenda.precio === parseInt(precio) )
+    return resultado 
+}
 
-const precios = [10000, 9000, 18000, 25000, 15000]
 function calcularInteres(){
     let precio = parseInt(prompt('Poner precio de tu prenda: (10000, 9000, 18000, 25000, 15000)'))
-    const recargo = precio * 0.1 
-    let resultado = (precio + recargo)/3
-    for(let i = 0; i < precios.length; i++){
-        if (precios[i] == precio){
+    let precioElegido = buscarPrecios(precio)
+    if(precioElegido !== undefined) {
+        let interes = precioElegido.precio * 0.1
+        let resultado = (precio + interes)/3
         return confirm('Son $ ' + resultado + ' en 3 cuotas')
-        }
-        else{
-        alert('Por favor elija un precio valido')
-        calcularInteres()
-        }
-    }
+    }   
+    alert('Por favor elija un precio valido')
+    calcularInteres()
 }
 
 function concluirCompra() {
-    const compras = new añadir(carrito)
-    alert ('¡Muchas gracias por su compra!')
-}
+    let concluir = new Compra(carrito)
+    concluir.despedida()
+ }
 
 
 realizarCompra()
